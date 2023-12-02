@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
+	"strings"
 )
 
 type neuteredFileSystem struct {
@@ -34,11 +35,17 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	if strings.HasPrefix(r.URL.Path, "/api") {
+		http.NotFound(w, r)
+		return
+	}
+
 	if r.URL.Path == "/favicon.ico" {
 		rawFile, _ := embedded.ReadFile("dist/favicon.ico")
 		w.Write(rawFile)
 		return
 	}
+
 	rawFile, _ := embedded.ReadFile("dist/index.html")
 	w.Write(rawFile)
 }
