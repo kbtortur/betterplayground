@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-//go:embed all:dist
+//go:embed all:web-dist
 var embedded embed.FS
 
 func main() {

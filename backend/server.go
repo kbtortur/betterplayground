@@ -41,12 +41,12 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.URL.Path == "/favicon.ico" {
-		rawFile, _ := embedded.ReadFile("dist/favicon.ico")
+		rawFile, _ := embedded.ReadFile("web-dist/favicon.ico")
 		w.Write(rawFile)
 		return
 	}
 
-	rawFile, _ := embedded.ReadFile("dist/index.html")
+	rawFile, _ := embedded.ReadFile("web-dist/index.html")
 	w.Write(rawFile)
 }
 
@@ -57,7 +57,7 @@ func Router() http.Handler {
 	mux.HandleFunc("/", indexHandler)
 
 	// static files
-	staticFS, _ := fs.Sub(embedded, "dist")
+	staticFS, _ := fs.Sub(embedded, "web-dist")
 	httpFS := http.FileServer(neuteredFileSystem{http.FS(staticFS)})
 	mux.Handle("/static", http.NotFoundHandler())
 	mux.Handle("/static/", httpFS)

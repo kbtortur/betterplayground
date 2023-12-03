@@ -23,5 +23,5 @@ func main() {
 		panic(err)
 	}
 
-	err = os.Rename("../frontend/dist", "dist")
+	err = os.Rename("../frontend/dist", "web-dist")
 }

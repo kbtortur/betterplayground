@@ -30,3 +30,4 @@ coverage
 
 # gostuff
 backend/betterplayground*
+backend/web-dist
