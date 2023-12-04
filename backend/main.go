@@ -4,7 +4,7 @@ package main
 
 import (
 	"embed"
-	"log"
+	"fmt"
 	"net/http"
 )
 
@@ -17,6 +17,7 @@ func main() {
 		Handler: Router(),
 	}
 
-	log.Print("Listening on http://localhost:3000")
+	fmt.Println("Listening on http://localhost:3000")
+	openURL("http://localhost:3000")
 	srv.ListenAndServe()
 }
