@@ -1,6 +1,16 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router"
-import MainHeader from "./components/MainHeader.vue"
+import { RouterView, useRouter } from "vue-router"
+
+import MainHeader from "@/components/MainHeader.vue"
+import { useSettings } from "@/stores/settings";
+
+const settings = useSettings()
+const router = useRouter()
+
+if (settings.openaiApiKey === "") {
+  router.replace("/setup")
+}
+
 </script>
 
 <template>
