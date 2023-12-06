@@ -11,7 +11,7 @@ func main() {
 	// This file is ignored by the build process.
 	// It is only used to generate the frontend build.
 
-	os.RemoveAll("dist")
+	os.RemoveAll("web-dist")
 
 	build := exec.Command("npm", "run", "build")
 	build.Dir = "../frontend"
