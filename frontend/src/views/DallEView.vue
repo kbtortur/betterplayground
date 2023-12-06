@@ -1,0 +1,3 @@
+<template>
+  Dall-e
+</template>
