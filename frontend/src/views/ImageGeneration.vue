@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useSettings } from "@/stores/settings"
+import { getOpenAI } from "@/openai"
 import { reactive } from "vue"
 
-const settings = useSettings()
+const openai = getOpenAI()
 
 const inputs = reactive({
   prompt: "",
-  revisedPrompt: "",
 })
 
 const outputs = reactive({
@@ -15,25 +14,17 @@ const outputs = reactive({
 })
 
 const generate = async () => {
-  const request = await fetch("https://api.openai.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${settings.openaiApiKey}`,
-    },
-    body: JSON.stringify({
-      prompt: inputs.prompt,
-      model: "dall-e-3",
-      n: 1,
-      size: "1024x1024",
-    }),
+  const response = await openai.images.generate({
+    prompt: inputs.prompt,
+    model: "dall-e-3",
+    n: 1,
+    size: "1024x1024",
   })
 
-  const response = await request.json()
   console.log(response)
 
-  outputs.imageURL = response.data[0].url
-  outputs.revisedPrompt = response.data[0].revised_prompt
+  outputs.imageURL = response.data[0].url ?? ""
+  outputs.revisedPrompt = response.data[0].revised_prompt ?? ""
 }
 </script>
 

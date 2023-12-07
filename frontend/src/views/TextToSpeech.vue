@@ -1,28 +1,18 @@
 <script setup lang="ts">
-import { useSettings } from "@/stores/settings"
-import OpenAI from "openai"
+import { getOpenAI } from "@/openai"
 import { reactive } from "vue"
-import { useRouter } from "vue-router"
 
-const settings = useSettings()
-const apiKey = settings.openaiApiKey
-
-const router = useRouter()
-
-if (!apiKey) {
-  router.replace("/setup")
-  throw new Error("OpenAI API key not set")
-}
-
-const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true })
+const openai = getOpenAI()
 const generate = async () => {
-  const mp3 = await openai.audio.speech.create({
+  const response = await openai.audio.speech.create({
     model: "tts-1",
     voice: "onyx",
     input: inputs.prompt,
   })
 
-  const blob = await mp3.blob()
+  console.log(response)
+
+  const blob = await response.blob()
   const url = URL.createObjectURL(blob)
 
   outputs.audioURL = url
