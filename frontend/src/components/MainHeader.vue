@@ -1,7 +1,12 @@
+<script setup lang="ts">
+import { routeList } from "@/router"
+</script>
+
 <template>
   <header>
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/dall-e">DALL·E</RouterLink>
+    <RouterLink v-for="view in routeList" :to="view.path" :key="view.path">{{
+      view.name
+    }}</RouterLink>
   </header>
 </template>
 
