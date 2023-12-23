@@ -1,14 +1,12 @@
 builds:
-  - env:
-      - CGO_ENABLED=0
-    goos:
+  - goos:
       # - linux
       - windows
       - darwin
 
 before:
   hooks:
-  - go generate ./...
+  - go run scripts/build-frontend.go
 
 archives:
   - format: binary

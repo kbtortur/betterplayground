@@ -1,4 +1,4 @@
-//go:generate go run build-frontend.go
+//go:generate goreleaser --clean --snapshot
 
 package main
 
