@@ -1,6 +1,7 @@
 interface ChatInterfaceMessage {
   text: string
-  photo?: string
+  image?: string
   loading?: boolean
+  id?: string
   isRequest: boolean
 }

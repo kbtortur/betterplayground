@@ -3,8 +3,9 @@
 :root {
   --header-height: 3rem;
 
-  --accent: hsl(239, 74%, 51%);
-  --accent-dim: hsl(239, 74%, 41%);
+
+  --accent: hsl(165, 82%, 35%);
+  --accent-dim: hsl(165, 82%, 25%);
 
   --backdrop: hsla(0, 0%, 100%, 0.05);
 }

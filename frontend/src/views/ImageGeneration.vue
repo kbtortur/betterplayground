@@ -1,60 +1,55 @@
 <script setup lang="ts">
 const openai = getOpenAI()
 
-const inputs = reactive({
-  prompt: "",
-})
+const messages = ref<ChatInterfaceMessage[]>([])
 
-const outputs = reactive({
-  revisedPrompt: "",
-  imageURL: "",
-})
-
-const generate = async () => {
+const generate = async (prompt: string) => {
   const response = await openai.images.generate({
-    prompt: inputs.prompt,
+    prompt: prompt,
     model: "dall-e-3",
     n: 1,
     size: "1024x1024",
     quality: "hd",
   })
-
   console.log(response)
 
-  outputs.imageURL = response.data[0].url ?? ""
-  outputs.revisedPrompt = response.data[0].revised_prompt ?? ""
+  return {
+    imageURL: response.data[0].url ?? "",
+    revisedPrompt: response.data[0].revised_prompt ?? "",
+  }
 }
 
-const messages = ref<ChatInterfaceMessage[]>([
-  {
-    text: "Give Fortnite",
-    isRequest: true,
-  },
-  {
-    text: "",
-    isRequest: false,
-    loading: true,
-  },
-])
-
-const onSend = (message: string) => {
+const onSend = async (message: string) => {
   messages.value.push({
     text: message,
     isRequest: true,
+  })
+
+  const id = UUIDGeneratorBrowser()
+  messages.value.push({
+    text: "",
+    isRequest: false,
+    loading: true,
+    id,
+  })
+
+  const { imageURL, revisedPrompt } = await generate(message)
+  messages.value = messages.value.map(message => {
+    if (message.id === id) {
+      return {
+        ...message,
+        text: `Revised prompt: ${revisedPrompt}`,
+        loading: false,
+        image: imageURL,
+      }
+    }
+    return message
   })
 }
 </script>
 
 <template>
   <main class="image-generation">
-    <!-- <form @submit.prevent="generate">
-    <textarea type="text" v-model="inputs.prompt" placeholder="prompt" />
-    <button>generate</button>
-  </form>
-
-  <p v-if="outputs.revisedPrompt">revised prompt: {{ outputs.revisedPrompt }}</p>
-  <img v-if="outputs.imageURL" :src="outputs.imageURL" alt="generated image" /> -->
-
     <ChatInterface @send="onSend" :messages="messages" />
   </main>
 </template>

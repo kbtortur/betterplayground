@@ -35,7 +35,10 @@ const onEnter = (event: KeyboardEvent) => {
         :key="message.text + index"
       >
         <span class="loader" v-if="message.loading"></span>
-        <template v-else>{{ message.text }}</template>
+        <template v-else>
+          <img v-if="message.image" :src="message.image" alt="attached image" />
+          {{ message.text }}
+        </template>
       </div>
     </div>
     <div class="input">
@@ -84,6 +87,11 @@ const onEnter = (event: KeyboardEvent) => {
     top: 100%;
     right: 100%;
     background: var(--color);
+  }
+
+  img {
+    margin: 0.5rem 0;
+    border-radius: 6.66px;
   }
 }
 
