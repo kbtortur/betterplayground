@@ -31,3 +31,5 @@ coverage
 # gostuff
 backend/betterplayground*
 backend/web-dist
+
+frontend/auto-imports.d.ts
