@@ -31,8 +31,9 @@ const messages = ref<ChatInterfaceMessage[]>([
     isRequest: true,
   },
   {
-    text: "Amongus",
+    text: "",
     isRequest: false,
+    loading: true,
   },
 ])
 

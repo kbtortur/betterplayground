@@ -16,7 +16,10 @@ const onEnter = (event: KeyboardEvent) => {
 
   event.preventDefault()
   event.stopPropagation()
-  emit("send", textContent.value)
+
+  if (textContent.value.trim() === "") return
+
+  emit("send", textContent.value.trim())
 
   textContent.value = ""
 }
@@ -31,7 +34,8 @@ const onEnter = (event: KeyboardEvent) => {
         v-for="(message, index) in messages"
         :key="message.text + index"
       >
-        {{ message.text }}
+        <span class="loader" v-if="message.loading"></span>
+        <template v-else>{{ message.text }}</template>
       </div>
     </div>
     <div class="input">
@@ -58,7 +62,7 @@ const onEnter = (event: KeyboardEvent) => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0 1rem;
+  padding: 1rem;
 }
 
 .message {
@@ -90,6 +94,51 @@ const onEnter = (event: KeyboardEvent) => {
   &:after {
     right: unset;
     left: 100%;
+  }
+}
+
+.loader {
+  --offset: 0.75rem;
+  --light-color: #fffa;
+  --dark-color: #fff2;
+
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--light-color);
+  box-shadow:
+    var(--offset) 0 var(--light-color),
+    calc(var(--offset) / -1) 0 var(--light-color);
+  position: relative;
+  animation: loading 1s ease-out infinite;
+  margin: 0.5em;
+}
+
+@keyframes loading {
+  0% {
+    background-color: var(--dark-color);
+    box-shadow:
+      var(--offset) 0 var(--dark-color),
+      calc(var(--offset) / -1) 0 var(--light-color);
+  }
+  25% {
+    background-color: var(--light-color);
+    box-shadow:
+      var(--offset) 0 var(--dark-color),
+      calc(var(--offset) / -1) 0 var(--dark-color);
+  }
+  75% {
+    background-color: var(--dark-color);
+    box-shadow:
+      var(--offset) 0 var(--light-color),
+      calc(var(--offset) / -1) 0 var(--dark-color);
+  }
+  100% {
+    background-color: var(--dark-color);
+    box-shadow:
+      var(--offset) 0 var(--dark-color),
+      calc(var(--offset) / -1) 0 var(--light-color);
   }
 }
 </style>
