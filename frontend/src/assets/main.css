@@ -3,16 +3,19 @@
 :root {
   --header-height: 3rem;
 
-
   --accent: hsl(165, 82%, 35%);
   --accent-dim: hsl(165, 82%, 25%);
 
-  --backdrop: hsla(0, 0%, 100%, 0.05);
+  --content-backdrop: hsla(0, 0%, 100%, 0.05);
+
+  --text-on-accent: hsl(0, 0%, 98%);
+  --text-on-backdrop: hsl(0, 0%, 98%);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --backdrop: hsla(0, 0%, 0%, 0.05);
+    --content-backdrop: hsla(0, 0%, 0%, 0.05);
+    --text-on-backdrop: hsl(0, 0%, 2%);
   }
 }
 

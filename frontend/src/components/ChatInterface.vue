@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   messages: {
     type: Array as PropType<ChatInterfaceMessage[]>,
     required: true,
@@ -8,6 +8,7 @@ defineProps({
 
 const emit = defineEmits<{
   (event: "send", message: string): void
+  (event: "insertLastMessage"): void
 }>()
 
 const textContent = ref("")
@@ -22,6 +23,17 @@ const onEnter = (event: KeyboardEvent) => {
   emit("send", textContent.value.trim())
 
   textContent.value = ""
+}
+
+const insertLastMessage = () => {
+  if (props.messages.length === 0) return
+  if (textContent.value.trim() !== "") return
+
+  const lastMessage = props.messages.filter(message => message.isRequest).at(-1)
+  console.log(lastMessage)
+  if (!lastMessage) return
+
+  textContent.value = lastMessage.text
 }
 </script>
 
@@ -42,7 +54,12 @@ const onEnter = (event: KeyboardEvent) => {
       </div>
     </div>
     <div class="input">
-      <TextareaGrower class="textarea" @keydown.enter="onEnter" v-model="textContent" />
+      <TextareaGrower
+        class="textarea"
+        @keydown.enter="onEnter"
+        @insertLastMessage="insertLastMessage"
+        v-model="textContent"
+      />
     </div>
   </div>
 </template>
@@ -69,12 +86,14 @@ const onEnter = (event: KeyboardEvent) => {
 }
 
 .message {
-  --color: var(--accent-dim);
+  --background: var(--accent-dim);
+  --color: var(--text-on-accent);
   padding: 0.5rem 1rem;
   border-radius: 6.66px;
   margin-bottom: 0.5rem;
   max-width: 666px;
-  background: var(--color);
+  background: var(--background);
+  color: var(--color);
   position: relative;
   align-self: flex-start;
 
@@ -86,17 +105,23 @@ const onEnter = (event: KeyboardEvent) => {
     border-radius: 50%;
     top: 100%;
     right: 100%;
-    background: var(--color);
+    background: var(--background);
   }
 
   img {
     margin: 0.5rem 0;
     border-radius: 6.66px;
+    transition: border-radius 100ms ease-in-out;
+
+    &:hover {
+      border-radius: 0px;
+    }
   }
 }
 
 .message.request {
-  --color: var(--backdrop);
+  --background: var(--content-backdrop);
+  --color: var(--text-on-backdrop);
   align-self: flex-end;
 
   &:after {

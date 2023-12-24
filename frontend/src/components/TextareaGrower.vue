@@ -4,6 +4,7 @@ defineProps<{
 }>()
 const emit = defineEmits<{
   (event: "update:modelValue", textContent: string): void
+  (event: "insertLastMessage"): void
 }>()
 
 const textarea = ref<HTMLTextAreaElement>()
@@ -25,6 +26,8 @@ const onInput = () => {
       rows="1"
       :value="modelValue"
       @input="onInput"
+      @keydown.up="emit('insertLastMessage')"
+      placeholder="Type a message..."
     />
   </div>
 </template>
