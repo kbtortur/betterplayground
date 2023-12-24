@@ -83,6 +83,8 @@ const insertLastMessage = () => {
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .message {
