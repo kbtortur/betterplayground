@@ -9,6 +9,7 @@ import Components from "unplugin-vue-components/vite"
 export default defineConfig({
   build: {
     assetsDir: "static",
+    target: ["chrome89", "safari15", "firefox89", "opera75"],
   },
   plugins: [
     vue(),
