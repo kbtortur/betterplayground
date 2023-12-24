@@ -1,11 +1,8 @@
 package main
 
 import (
-	"os"
 	"os/exec"
-	"path"
 	"runtime"
-	"strings"
 )
 
 // https://gist.github.com/sevkin/9798d67b2cb9d07cb05f89f14ba682f8
@@ -26,19 +23,4 @@ func openURL(url string) error {
 	}
 	args = append(args, url)
 	return exec.Command(cmd, args...).Start()
-}
-
-// gets the folder containing the executable
-func execRoot() string {
-	executablePath, _ := os.Executable()
-	executableFolder := path.Join(executablePath, "..")
-
-	if strings.HasPrefix(executableFolder, os.TempDir()) {
-		// the path for the executable is in some temp folder when using `go run .`
-		// so we use the current working directory instead
-		cwd, _ := os.Getwd()
-		return cwd
-	} else {
-		return executableFolder
-	}
 }

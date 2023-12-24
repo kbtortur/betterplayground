@@ -9,12 +9,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+
+	_ "github.com/vaaski/betterplayground/migrations"
 )
 
 //go:embed all:web-dist
@@ -52,6 +56,11 @@ func main() {
 		os.Args = append(os.Args, DEFAULT_ARGS...)
 	}
 
+	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
+	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
+		Automigrate: isGoRun,
+	})
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -62,6 +71,9 @@ func main() {
 	}()
 	defer wg.Wait()
 
-	openURL("http://127.0.0.1:" + fmt.Sprint(DEFAULT_PORT))
+	if !isGoRun {
+		openURL("http://127.0.0.1:" + fmt.Sprint(DEFAULT_PORT))
+	}
+
 	fmt.Println("Listening on http://127.0.0.1:" + fmt.Sprint(DEFAULT_PORT))
 }

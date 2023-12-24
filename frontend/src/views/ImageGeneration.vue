@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const openai = getOpenAI()
 
+pb.admins
+
 const messages = ref<ChatInterfaceMessage[]>([])
 
 const generate = async (prompt: string) => {
