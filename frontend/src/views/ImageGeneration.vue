@@ -32,11 +32,12 @@ const generate = async (prompt: string) => {
     n: 1,
     size: "1024x1024",
     quality: "hd",
+    response_format: "b64_json",
   })
   console.log(response)
 
   return {
-    imageURL: response.data[0].url ?? "",
+    imageBlob: await imageToBlob(response.data[0].b64_json ?? ""),
     revisedPrompt: response.data[0].revised_prompt ?? "",
   }
 }
@@ -56,14 +57,13 @@ const onSend = async (message: string) => {
     loadingUUID,
   })
 
-  const { imageURL, revisedPrompt } = await generate(message)
+  const { imageBlob, revisedPrompt } = await generate(message)
   const responseMessage = {
     isRequest: false,
     date: new Date(),
     text: `Revised prompt: ${revisedPrompt}`,
   }
 
-  const imageBlob = await imageToBlob(imageURL)
   messages.value = messages.value.map(message => {
     if (message.loadingUUID === loadingUUID) {
       return { ...responseMessage, imageURL: URL.createObjectURL(imageBlob) }

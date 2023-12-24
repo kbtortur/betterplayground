@@ -54,7 +54,13 @@ func init() {
 					"options": {
 						"maxSelect": 1,
 						"maxSize": 5242880,
-						"mimeTypes": [],
+						"mimeTypes": [
+							"image/jpeg",
+							"image/png",
+							"image/svg+xml",
+							"image/gif",
+							"image/webp"
+						],
 						"thumbs": [],
 						"protected": false
 					}
