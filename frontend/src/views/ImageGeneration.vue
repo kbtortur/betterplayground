@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import ChatInterfaceVue, { type Message } from "@/components/ChatInterface.vue"
-import { getOpenAI } from "@/openai"
-import { reactive, ref } from "vue"
-
 const openai = getOpenAI()
 
 const inputs = reactive({
@@ -29,7 +25,7 @@ const generate = async () => {
   outputs.revisedPrompt = response.data[0].revised_prompt ?? ""
 }
 
-const messages = ref<Message[]>([
+const messages = ref<ChatInterfaceMessage[]>([
   {
     text: "Give Fortnite",
     isRequest: true,
@@ -58,6 +54,6 @@ const onSend = (message: string) => {
   <p v-if="outputs.revisedPrompt">revised prompt: {{ outputs.revisedPrompt }}</p>
   <img v-if="outputs.imageURL" :src="outputs.imageURL" alt="generated image" /> -->
 
-    <ChatInterfaceVue @send="onSend" :messages="messages" />
+    <ChatInterface @send="onSend" :messages="messages" />
   </main>
 </template>

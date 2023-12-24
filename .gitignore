@@ -33,3 +33,4 @@ backend/betterplayground*
 backend/web-dist
 
 frontend/auto-imports.d.ts
+frontend/components.d.ts

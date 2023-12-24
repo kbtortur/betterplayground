@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { getOpenAI } from "@/openai"
-import { reactive } from "vue"
-
 const openai = getOpenAI()
 const generate = async () => {
   const response = await openai.audio.speech.create({

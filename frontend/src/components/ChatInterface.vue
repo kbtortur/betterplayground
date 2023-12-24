@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import { ref, type PropType } from "vue"
-import TextareaGrowerVue from "./TextareaGrower.vue"
-
-export interface Message {
-  text: string
-  photo?: string
-  isRequest: boolean
-}
-
 defineProps({
   messages: {
-    type: Array as PropType<Message[]>,
+    type: Array as PropType<ChatInterfaceMessage[]>,
     required: true,
   },
 })
@@ -44,7 +35,7 @@ const onEnter = (event: KeyboardEvent) => {
       </div>
     </div>
     <div class="input">
-      <TextareaGrowerVue class="textarea" @keydown.enter="onEnter" v-model="textContent" />
+      <TextareaGrower class="textarea" @keydown.enter="onEnter" v-model="textContent" />
     </div>
   </div>
 </template>
