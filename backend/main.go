@@ -17,6 +17,7 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/spf13/cobra"
 
 	_ "github.com/vaaski/betterplayground/migrations"
 )
@@ -39,6 +40,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	cobra.MousetrapHelpText = ""
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.GET("/*", apis.StaticDirectoryHandler(webDist, true))
