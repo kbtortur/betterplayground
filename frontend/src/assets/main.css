@@ -1,8 +1,28 @@
-@import "./base.css";
+@import "@acab/reset.css";
+
+:root {
+  --header-height: 3rem;
+
+  --accent: hsl(239, 74%, 51%);
+  --accent-dim: hsl(239, 74%, 41%);
+
+  --backdrop: hsla(0, 0%, 100%, 0.05);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --backdrop: hsla(0, 0%, 0%, 0.05);
+  }
+}
+
+body {
+  height: 100vh;
+}
 
 #app {
   max-width: 1280px;
   margin: 0 auto;
+  height: 100%;
 
   font-weight: normal;
 }

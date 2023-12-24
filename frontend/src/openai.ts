@@ -9,8 +9,8 @@ export const getOpenAI = () => {
   const apiKey = settings.openaiApiKey
 
   if (!apiKey) {
-    router.replace("/setup")
-    throw new Error("OpenAI API key not set")
+    router.replace("/settings")
+    // throw new Error("OpenAI API key not set")
   }
 
   return new OpenAI({ apiKey, dangerouslyAllowBrowser: true })
