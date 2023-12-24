@@ -31,7 +31,7 @@ const insertLastMessage = () => {
 
   const lastMessage = props.messages.filter(message => message.isRequest).at(-1)
   console.log(lastMessage)
-  if (!lastMessage) return
+  if (!lastMessage?.text) return
 
   textContent.value = lastMessage.text
 }
@@ -44,11 +44,11 @@ const insertLastMessage = () => {
         class="message"
         :class="{ request: message.isRequest }"
         v-for="(message, index) in messages"
-        :key="message.text + index"
+        :key="index"
       >
-        <span class="loader" v-if="message.loading"></span>
+        <span class="loader" v-if="message.loadingUUID"></span>
         <template v-else>
-          <img v-if="message.image" :src="message.image" alt="attached image" />
+          <img v-if="message.imageURL" :src="message.imageURL" alt="attached image" />
           {{ message.text }}
         </template>
       </div>

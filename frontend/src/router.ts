@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     component: HomeView,
   },
   {
-    path: "/dall-e",
+    path: "/image-generation",
     name: "Image generation",
     component: () => import("./views/ImageGeneration.vue"),
   },

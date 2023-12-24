@@ -1,9 +1,29 @@
 <script setup lang="ts">
 const openai = getOpenAI()
 
-pb.admins
+const messages = ref<ChatInterfaceMessage[]>([
+  {
+    isRequest: false,
+    text: "Hello! I'm Dall-E, an AI that generates images from text prompts.",
+  },
+])
 
-const messages = ref<ChatInterfaceMessage[]>([])
+onBeforeMount(async () => {
+  const history = await pb.collection("image_generation").getList<DatabaseMessage>(1, 30, {
+    sort: "+created",
+  })
+
+  const transformed = history.items.map(message => {
+    if (message.image) {
+      message.imageURL = pb.files.getUrl(message, message.image)
+    }
+
+    return message
+  })
+
+  if (transformed.length <= 0) return
+  messages.value = transformed
+})
 
 const generate = async (prompt: string) => {
   const response = await openai.images.generate({
@@ -22,30 +42,38 @@ const generate = async (prompt: string) => {
 }
 
 const onSend = async (message: string) => {
-  messages.value.push({
+  const requestMessage: ChatInterfaceMessage = {
     text: message,
     isRequest: true,
-  })
+  }
 
-  const id = UUIDGeneratorBrowser()
+  messages.value.push(requestMessage)
+  await pb.collection("image_generation").create<ChatInterfaceMessage>(requestMessage)
+
+  const loadingUUID = UUIDGeneratorBrowser()
   messages.value.push({
-    text: "",
     isRequest: false,
-    loading: true,
-    id,
+    loadingUUID,
   })
 
   const { imageURL, revisedPrompt } = await generate(message)
+  const responseMessage = {
+    isRequest: false,
+    date: new Date(),
+    text: `Revised prompt: ${revisedPrompt}`,
+  }
+
+  const imageBlob = await imageToBlob(imageURL)
   messages.value = messages.value.map(message => {
-    if (message.id === id) {
-      return {
-        ...message,
-        text: `Revised prompt: ${revisedPrompt}`,
-        loading: false,
-        image: imageURL,
-      }
+    if (message.loadingUUID === loadingUUID) {
+      return { ...responseMessage, imageURL: URL.createObjectURL(imageBlob) }
     }
     return message
+  })
+
+  await pb.collection("image_generation").create<ChatInterfaceMessage>({
+    ...responseMessage,
+    image: new File([imageBlob], "image.jpg"),
   })
 }
 </script>
