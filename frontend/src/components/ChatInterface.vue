@@ -5,6 +5,7 @@ const props = defineProps({
     required: true,
   },
 })
+const reversedMesages = computed(() => props.messages.slice().reverse())
 
 const emit = defineEmits<{
   (event: "send", message: string): void
@@ -43,7 +44,7 @@ const insertLastMessage = () => {
       <div
         class="message"
         :class="{ request: message.isRequest }"
-        v-for="(message, index) in messages"
+        v-for="(message, index) in reversedMesages"
         :key="index"
       >
         <span class="loader" v-if="message.loadingUUID"></span>
@@ -80,7 +81,7 @@ const insertLastMessage = () => {
 
 .messages {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 0.5rem;
   padding: 1rem;
   max-height: 100%;
