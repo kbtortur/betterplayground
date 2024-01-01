@@ -10,7 +10,7 @@ const messages = ref<ChatInterfaceMessage[]>([
 
 onBeforeMount(async () => {
   const history = await pb.collection("image_generation").getList<DatabaseMessage>(1, 30, {
-    sort: "+created",
+    sort: "-created",
   })
 
   const transformed = history.items.map(message => {

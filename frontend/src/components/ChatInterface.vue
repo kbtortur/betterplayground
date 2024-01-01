@@ -5,7 +5,6 @@ const props = defineProps({
     required: true,
   },
 })
-const reversedMesages = computed(() => props.messages.slice().reverse())
 
 const emit = defineEmits<{
   (event: "send", message: string): void
@@ -44,7 +43,7 @@ const insertLastMessage = () => {
       <div
         class="message"
         :class="{ request: message.isRequest }"
-        v-for="(message, index) in reversedMesages"
+        v-for="(message, index) in props.messages"
         :key="index"
       >
         <span class="loader" v-if="message.loadingUUID"></span>
