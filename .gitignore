@@ -33,5 +33,6 @@ backend/betterplayground*
 backend/web-dist
 backend/pb_data
 
-frontend/auto-imports.d.ts
-frontend/components.d.ts
+# unplugin-auto-import
+auto-imports.d.ts
+components.d.ts
