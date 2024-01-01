@@ -8,7 +8,6 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (event: "send", message: string): void
-  (event: "insertLastMessage"): void
 }>()
 
 const textContent = ref("")
@@ -29,11 +28,14 @@ const insertLastMessage = () => {
   if (props.messages.length === 0) return
   if (textContent.value.trim() !== "") return
 
-  const lastMessage = props.messages.filter(message => message.isRequest).at(-1)
-  console.log(lastMessage)
-  if (!lastMessage?.text) return
+  const [lastUserMessage] = props.messages.filter(message => message.from === "human")
+  if (!lastUserMessage?.text) return
 
-  textContent.value = lastMessage.text
+  textContent.value = lastUserMessage.text
+}
+
+const getObjectURL = (blob: Blob) => {
+  return URL.createObjectURL(blob)
 }
 </script>
 
@@ -42,13 +44,13 @@ const insertLastMessage = () => {
     <div class="messages">
       <div
         class="message"
-        :class="{ request: message.isRequest }"
+        :class="{ request: message.from === 'human' }"
         v-for="(message, index) in props.messages"
         :key="index"
       >
         <span class="loader" v-if="message.loadingUUID"></span>
         <template v-else>
-          <img v-if="message.imageURL" :src="message.imageURL" alt="attached image" />
+          <img v-if="message.image" :src="getObjectURL(message.image)" alt="attached image" />
           {{ message.text }}
         </template>
       </div>
