@@ -3,11 +3,11 @@ import { openDB } from "idb"
 
 interface BPGSchema extends DBSchema {
   imageGenerationChat: {
-    value: ChatInterfaceMessage
-    key: string
+    value: ChatInterfaceMessage & { id?: number }
+    key: number
     indexes: {
-      "by-id": string
-      "by-text": string
+      "by-id": number
+      "by-text": number
     }
   }
 }

@@ -16,7 +16,20 @@ onBeforeMount(async () => {
   let cursor = await index.openCursor(null, "prev")
 
   while (cursor) {
-    history.push(cursor.value)
+    const { value, key } = cursor
+
+    // discard loading messages in database
+    if (value.loadingUUID) {
+      const message: ChatInterfaceMessage = {
+        from: "robot",
+        text: "Sorry, I lost this message.",
+      }
+      db.put("imageGenerationChat", { ...message, id: key })
+      history.push(message)
+    } else {
+      history.push(value)
+    }
+
     cursor = await cursor.continue()
   }
 
@@ -27,7 +40,7 @@ onBeforeMount(async () => {
 
 const generate = async (prompt: string) => {
   // const wait = (t: number): Promise<void> => new Promise(r => setTimeout(r, t))
-  // await wait(1000)
+  // await wait(Math.random() * 2000 + 500)
 
   // return {
   //   imageBlob: await urlImageToBlob("https://picsum.photos/500"),
@@ -53,26 +66,24 @@ const generate = async (prompt: string) => {
   }
 }
 
-// todo put loading message in database to prevent wrong order of the index
-const onSend = async (message: string) => {
+const onSend = async (text: string) => {
   const requestMessage: ChatInterfaceMessage = {
-    text: message,
     from: "human",
+    text,
   }
 
   messages.value.unshift(requestMessage)
-  await db.add("imageGenerationChat", {
-    from: "human",
-    text: message,
-  })
+  await db.add("imageGenerationChat", requestMessage)
 
   const loadingUUID = UUIDGeneratorBrowser()
-  messages.value.unshift({
+  const responseLoadingMessage: ChatInterfaceMessage = {
     from: "robot",
     loadingUUID,
-  })
+  }
+  messages.value.unshift(responseLoadingMessage)
+  const dbLoadingMessageID = await db.add("imageGenerationChat", responseLoadingMessage)
 
-  const { imageBlob, revisedPrompt } = await generate(message)
+  const { imageBlob, revisedPrompt } = await generate(text)
   const responseMessage: ChatInterfaceMessage = {
     from: "robot",
     text: `Revised prompt: ${revisedPrompt}`,
@@ -85,7 +96,7 @@ const onSend = async (message: string) => {
     } else return message
   })
 
-  await db.add("imageGenerationChat", responseMessage)
+  await db.put("imageGenerationChat", { ...responseMessage, id: dbLoadingMessageID })
 }
 </script>
 
