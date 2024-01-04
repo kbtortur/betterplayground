@@ -20,7 +20,9 @@ onBeforeMount(async () => {
     cursor = await cursor.continue()
   }
 
-  messages.value = history
+  if (history.length > 1) {
+    messages.value = history
+  }
 })
 
 const generate = async (prompt: string) => {
