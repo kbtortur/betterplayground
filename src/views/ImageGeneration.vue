@@ -9,30 +9,7 @@ const messages = ref<ChatInterfaceMessage[]>([
 ])
 
 onBeforeMount(async () => {
-  const history: ChatInterfaceMessage[] = []
-
-  const transaction = db.transaction("imageGenerationChat")
-  const index = transaction.store.index("by-id")
-  let cursor = await index.openCursor(null, "prev")
-
-  while (cursor) {
-    const { value, key } = cursor
-
-    // discard loading messages in database
-    if (value.loadingUUID) {
-      const message: ChatInterfaceMessage = {
-        from: "robot",
-        text: "Sorry, I lost this message.",
-      }
-      db.put("imageGenerationChat", { ...message, id: key })
-      history.push(message)
-    } else {
-      history.push(value)
-    }
-
-    cursor = await cursor.continue()
-  }
-
+  const history = await loadStoredMessages(["imageGenerationChat"])
   if (history.length > 1) {
     messages.value = history
   }
