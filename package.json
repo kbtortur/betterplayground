@@ -15,7 +15,7 @@
     "@acab/reset.css": "^0.8.0",
     "@vueuse/core": "^10.7.0",
     "idb": "^8.0.0",
-    "openai": "^4.20.1",
+    "openai": "^4.26.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "pocketbase": "^0.20.1",
