@@ -24,7 +24,7 @@ export const db = await openDB<BPGSchema>("betterplayground", 1, {
   },
 })
 
-type AvailableStores = Parameters<typeof db.transaction>[0]
+type AvailableStores = Parameters<typeof db.put>[0]
 export const loadStoredMessages = async <T extends AvailableStores>(storeName: T) => {
   const history: ChatInterfaceMessage[] = []
 
@@ -44,7 +44,7 @@ export const loadStoredMessages = async <T extends AvailableStores>(storeName: T
         from: "robot",
         text: "Sorry, I lost this message.",
       }
-      db.put("imageGenerationChat", { ...message, id: key })
+      db.put(storeName, { ...message, id: key })
       history.push(message)
     } else {
       history.push(value)

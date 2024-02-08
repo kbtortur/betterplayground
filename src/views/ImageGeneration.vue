@@ -9,7 +9,8 @@ const messages = ref<ChatInterfaceMessage[]>([
 ])
 
 onBeforeMount(async () => {
-  const history = await loadStoredMessages(["imageGenerationChat"])
+  const history = await loadStoredMessages("imageGenerationChat")
+
   if (history.length > 1) {
     messages.value = history
   }
