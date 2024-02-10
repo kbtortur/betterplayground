@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import markdownit from "markdown-it"
-import hljs from "highlight.js"
+import hljs from "highlight.js/lib/common"
 
 import "highlight.js/styles/github-dark.min.css"
 import "@fontsource-variable/fira-code"
