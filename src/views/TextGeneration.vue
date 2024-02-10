@@ -27,7 +27,8 @@ const transformSender = (role: ChatInterfaceMessage["from"]): "user" | "assistan
 
 type ChatMessageWithText = ChatInterfaceMessage & { text: string }
 const transformMessages = (messages: Array<ChatInterfaceMessage>) => {
-  return messages
+  return [...messages]
+    .reverse()
     .filter((message): message is ChatMessageWithText => message.text !== "")
     .map(message => {
       return {
