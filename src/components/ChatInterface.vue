@@ -49,7 +49,9 @@ const getObjectURL = (blob: Blob) => {
         :key="index"
       >
         <img v-if="message.image" :src="getObjectURL(message.image)" alt="attached image" />
-        <span v-if="message.text" class="text-content"> {{ message.text }} </span>
+        <span v-if="message.text" class="text-content">
+          <MarkdownRenderer :source="message.text" />
+        </span>
 
         <span class="loader" v-if="message.loadingUUID"></span>
       </div>
@@ -94,7 +96,7 @@ const getObjectURL = (blob: Blob) => {
   padding: 0.5rem 1rem;
   border-radius: 6.66px;
   margin-bottom: 0.5rem;
-  max-width: 666px;
+  max-width: min(100%, 666px);
   background: var(--background);
   color: var(--color);
   position: relative;
@@ -119,10 +121,6 @@ const getObjectURL = (blob: Blob) => {
     &:hover {
       border-radius: 0px;
     }
-  }
-
-  .text-content {
-    white-space: pre-wrap;
   }
 }
 
