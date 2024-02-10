@@ -48,11 +48,10 @@ const getObjectURL = (blob: Blob) => {
         v-for="(message, index) in props.messages"
         :key="index"
       >
+        <img v-if="message.image" :src="getObjectURL(message.image)" alt="attached image" />
+        <span v-if="message.text" class="text-content"> {{ message.text }} </span>
+
         <span class="loader" v-if="message.loadingUUID"></span>
-        <template v-else>
-          <img v-if="message.image" :src="getObjectURL(message.image)" alt="attached image" />
-          {{ message.text }}
-        </template>
       </div>
     </div>
     <div class="input">
@@ -120,6 +119,10 @@ const getObjectURL = (blob: Blob) => {
     &:hover {
       border-radius: 0px;
     }
+  }
+
+  .text-content {
+    white-space: pre-wrap;
   }
 }
 

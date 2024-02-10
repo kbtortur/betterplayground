@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import("./views/ImageGeneration.vue"),
   },
   {
+    path: "/text-generation",
+    name: "Text generation",
+    component: () => import("./views/TextGeneration.vue"),
+  },
+  {
     path: "/tts",
     name: "Text-to-speech",
     component: () => import("./views/TextToSpeech.vue"),

@@ -3,4 +3,4 @@ type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T
 
 type ChatInterfaceMessage = {
   from: "human" | "robot"
-} & XOR<{ text: string; image?: Blob }, { loadingUUID?: string }>
+} & XOR<{ text: string; image?: Blob }, { text?: string; loadingUUID?: string }>

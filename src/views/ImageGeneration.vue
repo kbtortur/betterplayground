@@ -11,7 +11,7 @@ const messages = ref<ChatInterfaceMessage[]>([
 onBeforeMount(async () => {
   const history = await loadStoredMessages("imageGenerationChat")
 
-  if (history.length > 1) {
+  if (history.length > 0) {
     messages.value = history
   }
 })
@@ -53,7 +53,7 @@ const onSend = async (text: string) => {
   messages.value.unshift(requestMessage)
   await db.add("imageGenerationChat", requestMessage)
 
-  const loadingUUID = UUIDGeneratorBrowser()
+  const loadingUUID = UUIDGenerator()
   const responseLoadingMessage: ChatInterfaceMessage = {
     from: "robot",
     loadingUUID,

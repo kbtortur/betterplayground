@@ -10,17 +10,38 @@ interface BPGSchema extends DBSchema {
       "by-text": number
     }
   }
+
+  textGenerationChat: {
+    value: ChatInterfaceMessage & { id?: number }
+    key: number
+    indexes: {
+      "by-id": number
+      "by-text": number
+    }
+  }
 }
 
-export const db = await openDB<BPGSchema>("betterplayground", 1, {
+export const db = await openDB<BPGSchema>("betterplayground", 2, {
   upgrade(db) {
-    const imageGenerationChat = db.createObjectStore("imageGenerationChat", {
-      autoIncrement: true,
-      keyPath: "id",
-    })
+    if (!db.objectStoreNames.contains("imageGenerationChat")) {
+      const imageGenerationChat = db.createObjectStore("imageGenerationChat", {
+        autoIncrement: true,
+        keyPath: "id",
+      })
 
-    imageGenerationChat.createIndex("by-id", "id", { unique: true })
-    imageGenerationChat.createIndex("by-text", "text")
+      imageGenerationChat.createIndex("by-id", "id", { unique: true })
+      imageGenerationChat.createIndex("by-text", "text")
+    }
+
+    if (!db.objectStoreNames.contains("textGenerationChat")) {
+      const textGenerationChat = db.createObjectStore("textGenerationChat", {
+        autoIncrement: true,
+        keyPath: "id",
+      })
+
+      textGenerationChat.createIndex("by-id", "id", { unique: true })
+      textGenerationChat.createIndex("by-text", "text")
+    }
   },
 })
 
