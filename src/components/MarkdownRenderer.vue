@@ -52,12 +52,35 @@ watch(
     margin-bottom: 0.25em;
   }
 
+  code {
+    background: rgba(66, 66, 66, 0.25);
+    padding: 0.2em 0.4em;
+    border-radius: 3.33px;
+  }
+
   pre:has(code) {
     background: #1f1f1f;
     padding: 0.75rem 1rem;
     margin: 0.25rem 0;
     border-radius: 6.66px;
     overflow-x: auto;
+
+    code {
+      background: revert;
+    }
+  }
+
+  p {
+    margin: 0.25em 0;
+  }
+
+  ul,
+  ol {
+    list-style-type: revert;
+
+    > li {
+      margin-left: 1.5em;
+    }
   }
 }
 </style>
