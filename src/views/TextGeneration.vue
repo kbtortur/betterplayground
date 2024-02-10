@@ -37,7 +37,14 @@ const transformMessages = (messages: Array<ChatInterfaceMessage>) => {
     })
 }
 
+const clearMessages = async () => {
+  await db.clear("textGenerationChat")
+  messages.value = []
+}
+
 const onSend = async (text: string) => {
+  if (text === "/clear") return await clearMessages()
+
   const requestMessage: ChatInterfaceMessage = {
     from: "human",
     text,
