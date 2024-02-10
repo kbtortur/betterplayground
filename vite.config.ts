@@ -4,12 +4,13 @@ import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import AutoImport from "unplugin-auto-import/vite"
 import Components from "unplugin-vue-components/vite"
+import { visualizer } from "rollup-plugin-visualizer"
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     assetsDir: "static",
-    target: ["chrome89", "safari15", "firefox89", "opera75"],
+    target: "es2022",
   },
   plugins: [
     vue(),
@@ -19,6 +20,7 @@ export default defineConfig({
       imports: ["vue", "vue-router", "@vueuse/core"],
     }),
     Components({}),
+    visualizer(),
   ],
   resolve: {
     alias: {
