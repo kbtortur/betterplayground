@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@acab/reset.css": "^0.8.0",
+    "@fontsource-variable/fira-code": "^5.0.16",
     "@vueuse/core": "^10.7.0",
     "highlight.js": "^11.9.0",
     "idb": "^8.0.0",

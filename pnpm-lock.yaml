@@ -8,6 +8,9 @@ dependencies:
   '@acab/reset.css':
     specifier: ^0.8.0
     version: 0.8.0
+  '@fontsource-variable/fira-code':
+    specifier: ^5.0.16
+    version: 5.0.16
   '@vueuse/core':
     specifier: ^10.7.0
     version: 10.7.0(vue@3.3.10)
@@ -384,6 +387,10 @@ packages:
     resolution: {integrity: sha512-qQfo2mxH5yVom1kacMtZZJFVdW+E70mqHMJvVg6WTLo+VBuQJ4TojZlfWBjK0ve5BdEeNAVxOsl/nvNMpJOaJA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@fontsource-variable/fira-code@5.0.16:
+    resolution: {integrity: sha512-XcBZxdY8yEZ+lB314w6upoHKDWJuVWJUwTHxKeQo952MtV9Cf4mZkQ2z0FeHQ3n6h23pAjmq3FgK+k83/OzHLg==}
+    dev: false
 
   /@humanwhocodes/config-array@0.11.13:
     resolution: {integrity: sha512-JSBDMiDKSzQVngfRjOdFXgFfklaXI4K9nLF49Auh21lmBWRLIK3+xTErTWD4KU54pb6coM6ESE7Awz/FNU3zgQ==}

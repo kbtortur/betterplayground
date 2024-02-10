@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import markdownit from "markdown-it"
 import hljs from "highlight.js"
+
 import "highlight.js/styles/github-dark.min.css"
+import "@fontsource-variable/fira-code"
 
 const props = defineProps({
   source: {
@@ -56,6 +58,8 @@ watch(
     background: rgba(66, 66, 66, 0.25);
     padding: 0.2em 0.4em;
     border-radius: 3.33px;
+    font-family: "Fira Code Variable", monospace;
+    font-size: 0.8em;
   }
 
   pre:has(code) {
