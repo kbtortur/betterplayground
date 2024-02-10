@@ -15,9 +15,9 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      dts: true,
-      dirs: ["./src/composables/*", "./src/stores/*"],
+      dirs: ["./src/composables/**", "./src/stores/**"],
       imports: ["vue", "vue-router", "@vueuse/core"],
+      vueTemplate: true,
     }),
     Components({}),
     visualizer(),

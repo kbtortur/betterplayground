@@ -54,7 +54,7 @@ const onSend = async (text: string) => {
   messages.value.unshift(requestMessage)
   await db.add("textGenerationChat", requestMessage)
 
-  const loadingUUID = UUIDGenerator()
+  const loadingUUID = crypto.randomUUID()
   const responseMessage: ChatInterfaceMessage = {
     from: "robot",
     loadingUUID,
