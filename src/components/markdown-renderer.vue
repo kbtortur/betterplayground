@@ -5,7 +5,7 @@ import hljs from "highlight.js/lib/common"
 import "highlight.js/styles/github-dark.min.css"
 import "@fontsource-variable/fira-code"
 
-const props = defineProps({
+const properties = defineProps({
   source: {
     type: String,
     required: true,
@@ -19,7 +19,7 @@ const md = markdownit({
     if (language && hljs.getLanguage(language)) {
       try {
         return hljs.highlight(source, { language }).value
-      } catch (__) {
+      } catch {
         // ignore
       }
     }
@@ -31,9 +31,9 @@ const md = markdownit({
 const html = ref("")
 
 watch(
-  () => props.source,
+  () => properties.source,
   () => {
-    html.value = md.render(props.source)
+    html.value = md.render(properties.source)
   },
   { immediate: true }
 )

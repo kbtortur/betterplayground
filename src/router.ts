@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router"
-import HomeView from "./views/HomeView.vue"
+import HomeView from "./views/home-view.vue"
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/setup",
-    component: () => import("./views/FirstSetup.vue"),
+    component: () => import("./views/first-setup.vue"),
   },
   {
     path: "/",
@@ -14,22 +14,22 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/image-generation",
     name: "Image generation",
-    component: () => import("./views/ImageGeneration.vue"),
+    component: () => import("./views/image-generation.vue"),
   },
   {
     path: "/text-generation",
     name: "Text generation",
-    component: () => import("./views/TextGeneration.vue"),
+    component: () => import("./views/text-generation.vue"),
   },
   {
     path: "/tts",
     name: "Text-to-speech",
-    component: () => import("./views/TextToSpeech.vue"),
+    component: () => import("./views/text-to-speech.vue"),
   },
   {
     path: "/settings",
     name: "Settings",
-    component: () => import("./views/SettingsView.vue"),
+    component: () => import("./views/settings-view.vue"),
   },
 ]
 export const routeList = routes.map(({ name, path }) => ({ name, path }))
@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
-      component: () => import("./views/NotFound.vue"),
+      component: () => import("./views/not-found.vue"),
     },
   ],
 })

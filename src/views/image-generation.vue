@@ -59,7 +59,7 @@ const onSend = async (text: string) => {
     loadingUUID,
   }
   messages.value.unshift(responseLoadingMessage)
-  const dbLoadingMessageID = await db.add("imageGenerationChat", responseLoadingMessage)
+  const databaseLoadingMessageID = await db.add("imageGenerationChat", responseLoadingMessage)
 
   const { imageBlob, revisedPrompt } = await generate(text)
   const responseMessage: ChatInterfaceMessage = {
@@ -69,12 +69,10 @@ const onSend = async (text: string) => {
   }
 
   messages.value = messages.value.map(message => {
-    if (message.loadingUUID === loadingUUID) {
-      return responseMessage
-    } else return message
+    return message.loadingUUID === loadingUUID ? responseMessage : message
   })
 
-  await db.put("imageGenerationChat", { ...responseMessage, id: dbLoadingMessageID })
+  await db.put("imageGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
 }
 </script>
 

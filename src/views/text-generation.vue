@@ -61,7 +61,7 @@ const onSend = async (text: string) => {
     text: "",
   }
   messages.value.unshift(responseMessage)
-  const dbLoadingMessageID = await db.add("textGenerationChat", responseMessage)
+  const databaseLoadingMessageID = await db.add("textGenerationChat", responseMessage)
 
   //? Mock loading
   // const wait = (t: number): Promise<void> => new Promise(r => setTimeout(r, t))
@@ -89,7 +89,7 @@ const onSend = async (text: string) => {
   responseMessage.loadingUUID = undefined
   updateMessage(loadingUUID, responseMessage)
 
-  await db.put("textGenerationChat", { ...responseMessage, id: dbLoadingMessageID })
+  await db.put("textGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
 }
 </script>
 

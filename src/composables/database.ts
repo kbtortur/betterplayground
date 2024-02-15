@@ -21,10 +21,10 @@ interface BPGSchema extends DBSchema {
   }
 }
 
-export const db = await openDB<BPGSchema>("betterplayground", 2, {
-  upgrade(db) {
-    if (!db.objectStoreNames.contains("imageGenerationChat")) {
-      const imageGenerationChat = db.createObjectStore("imageGenerationChat", {
+export const bpgDatabase = await openDB<BPGSchema>("betterplayground", 2, {
+  upgrade(database) {
+    if (!database.objectStoreNames.contains("imageGenerationChat")) {
+      const imageGenerationChat = database.createObjectStore("imageGenerationChat", {
         autoIncrement: true,
         keyPath: "id",
       })
@@ -33,8 +33,8 @@ export const db = await openDB<BPGSchema>("betterplayground", 2, {
       imageGenerationChat.createIndex("by-text", "text")
     }
 
-    if (!db.objectStoreNames.contains("textGenerationChat")) {
-      const textGenerationChat = db.createObjectStore("textGenerationChat", {
+    if (!database.objectStoreNames.contains("textGenerationChat")) {
+      const textGenerationChat = database.createObjectStore("textGenerationChat", {
         autoIncrement: true,
         keyPath: "id",
       })
@@ -45,15 +45,15 @@ export const db = await openDB<BPGSchema>("betterplayground", 2, {
   },
 })
 
-type AvailableStores = Parameters<typeof db.put>[0]
+type AvailableStores = Parameters<typeof bpgDatabase.put>[0]
 export const loadStoredMessages = async <T extends AvailableStores>(storeName: T) => {
   const history: ChatInterfaceMessage[] = []
 
-  const transaction = db.transaction(storeName)
+  const transaction = bpgDatabase.transaction(storeName)
   if (!transaction?.store) throw new Error(`Store ${storeName} not found`)
 
   const index = transaction.store.index("by-id")
-  let cursor = await index.openCursor(null, "prev")
+  let cursor = await index.openCursor(undefined, "prev")
 
   while (cursor) {
     const { value, key } = cursor
@@ -65,7 +65,7 @@ export const loadStoredMessages = async <T extends AvailableStores>(storeName: T
         from: "robot",
         text: "Sorry, I lost this message.",
       }
-      db.put(storeName, { ...message, id: key })
+      bpgDatabase.put(storeName, { ...message, id: key })
       history.push(message)
     } else {
       history.push(value)

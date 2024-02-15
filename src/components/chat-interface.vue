@@ -28,7 +28,7 @@ const insertLastMessage = () => {
   if (props.messages.length === 0) return
   if (textContent.value.trim() !== "") return
 
-  const [lastUserMessage] = props.messages.filter(message => message.from === "human")
+  const lastUserMessage = props.messages.find(message => message.from === "human")
   if (!lastUserMessage?.text) return
 
   textContent.value = lastUserMessage.text
