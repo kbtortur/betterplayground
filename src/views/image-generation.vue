@@ -51,7 +51,7 @@ const onSend = async (text: string) => {
   }
 
   messages.value.unshift(requestMessage)
-  await db.add("imageGenerationChat", requestMessage)
+  await database.add("imageGenerationChat", requestMessage)
 
   const loadingUUID = crypto.randomUUID()
   const responseLoadingMessage: ChatInterfaceMessage = {
@@ -59,7 +59,7 @@ const onSend = async (text: string) => {
     loadingUUID,
   }
   messages.value.unshift(responseLoadingMessage)
-  const databaseLoadingMessageID = await db.add("imageGenerationChat", responseLoadingMessage)
+  const databaseLoadingMessageID = await database.add("imageGenerationChat", responseLoadingMessage)
 
   const { imageBlob, revisedPrompt } = await generate(text)
   const responseMessage: ChatInterfaceMessage = {
@@ -72,7 +72,7 @@ const onSend = async (text: string) => {
     return message.loadingUUID === loadingUUID ? responseMessage : message
   })
 
-  await db.put("imageGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
+  await database.put("imageGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
 }
 </script>
 

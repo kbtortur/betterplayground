@@ -39,7 +39,7 @@ const transformMessages = (messages: Array<ChatInterfaceMessage>) => {
 }
 
 const clearMessages = async () => {
-  await db.clear("textGenerationChat")
+  await database.clear("textGenerationChat")
   messages.value = []
 }
 
@@ -52,7 +52,7 @@ const onSend = async (text: string) => {
   }
 
   messages.value.unshift(requestMessage)
-  await db.add("textGenerationChat", requestMessage)
+  await database.add("textGenerationChat", requestMessage)
 
   const loadingUUID = crypto.randomUUID()
   const responseMessage: ChatInterfaceMessage = {
@@ -61,7 +61,7 @@ const onSend = async (text: string) => {
     text: "",
   }
   messages.value.unshift(responseMessage)
-  const databaseLoadingMessageID = await db.add("textGenerationChat", responseMessage)
+  const databaseLoadingMessageID = await database.add("textGenerationChat", responseMessage)
 
   //? Mock loading
   // const wait = (t: number): Promise<void> => new Promise(r => setTimeout(r, t))
@@ -74,7 +74,14 @@ const onSend = async (text: string) => {
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4-turbo-preview",
-    messages: transformMessages(messages.value),
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant. Keep your responses brief and concise. Do not explain basic concepts unless asked.",
+      },
+      ...transformMessages(messages.value),
+    ],
     stream: true,
   })
 
@@ -89,7 +96,7 @@ const onSend = async (text: string) => {
   responseMessage.loadingUUID = undefined
   updateMessage(loadingUUID, responseMessage)
 
-  await db.put("textGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
+  await database.put("textGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
 }
 </script>
 

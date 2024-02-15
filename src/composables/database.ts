@@ -21,7 +21,7 @@ interface BPGSchema extends DBSchema {
   }
 }
 
-export const bpgDatabase = await openDB<BPGSchema>("betterplayground", 2, {
+export const database = await openDB<BPGSchema>("betterplayground", 2, {
   upgrade(database) {
     if (!database.objectStoreNames.contains("imageGenerationChat")) {
       const imageGenerationChat = database.createObjectStore("imageGenerationChat", {
@@ -45,11 +45,11 @@ export const bpgDatabase = await openDB<BPGSchema>("betterplayground", 2, {
   },
 })
 
-type AvailableStores = Parameters<typeof bpgDatabase.put>[0]
+type AvailableStores = Parameters<typeof database.put>[0]
 export const loadStoredMessages = async <T extends AvailableStores>(storeName: T) => {
   const history: ChatInterfaceMessage[] = []
 
-  const transaction = bpgDatabase.transaction(storeName)
+  const transaction = database.transaction(storeName)
   if (!transaction?.store) throw new Error(`Store ${storeName} not found`)
 
   const index = transaction.store.index("by-id")
@@ -65,7 +65,7 @@ export const loadStoredMessages = async <T extends AvailableStores>(storeName: T
         from: "robot",
         text: "Sorry, I lost this message.",
       }
-      bpgDatabase.put(storeName, { ...message, id: key })
+      database.put(storeName, { ...message, id: key })
       history.push(message)
     } else {
       history.push(value)
