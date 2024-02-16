@@ -86,7 +86,10 @@ const onSend = async (text: string) => {
   })
 
   for await (const chunk of completion) {
-    const { content } = chunk.choices[0].delta
+    const [choice] = chunk.choices
+    if (!choice) continue
+
+    const { content } = choice.delta
     if (!content) continue
 
     responseMessage.text += content
@@ -96,7 +99,10 @@ const onSend = async (text: string) => {
   responseMessage.loadingUUID = undefined
   updateMessage(loadingUUID, responseMessage)
 
-  await database.put("textGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
+  await database.put("textGenerationChat", {
+    ...responseMessage,
+    id: databaseLoadingMessageID,
+  })
 }
 </script>
 

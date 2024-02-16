@@ -38,9 +38,12 @@ const generate = async (prompt: string) => {
   })
   console.log(response)
 
+  const [data] = response.data
+  if (!data) throw new Error("No data returned from OpenAI")
+
   return {
-    imageBlob: await b64ImageToBlob(response.data[0].b64_json ?? ""),
-    revisedPrompt: response.data[0].revised_prompt ?? "",
+    imageBlob: await b64ImageToBlob(data.b64_json ?? ""),
+    revisedPrompt: data.revised_prompt ?? "",
   }
 }
 
@@ -59,7 +62,10 @@ const onSend = async (text: string) => {
     loadingUUID,
   }
   messages.value.unshift(responseLoadingMessage)
-  const databaseLoadingMessageID = await database.add("imageGenerationChat", responseLoadingMessage)
+  const databaseLoadingMessageID = await database.add(
+    "imageGenerationChat",
+    responseLoadingMessage
+  )
 
   const { imageBlob, revisedPrompt } = await generate(text)
   const responseMessage: ChatInterfaceMessage = {
@@ -72,7 +78,10 @@ const onSend = async (text: string) => {
     return message.loadingUUID === loadingUUID ? responseMessage : message
   })
 
-  await database.put("imageGenerationChat", { ...responseMessage, id: databaseLoadingMessageID })
+  await database.put("imageGenerationChat", {
+    ...responseMessage,
+    id: databaseLoadingMessageID,
+  })
 }
 </script>
 
