@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from "vue"
+
 import markdownit from "markdown-it"
 import hljs from "highlight.js/lib/common"
 

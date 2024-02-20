@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref, type PropType } from "vue"
+
+import TextareaGrower from "./textarea-grower.vue"
+import MarkdownRenderer from "./markdown-renderer.vue"
+
 const props = defineProps({
   messages: {
     type: Array as PropType<ChatInterfaceMessage[]>,

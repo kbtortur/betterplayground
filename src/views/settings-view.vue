@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSettings } from "@/stores/settings"
+
 const settings = useSettings()
 </script>
 

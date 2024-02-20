@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { onBeforeMount, ref } from "vue"
+
+import { database, loadStoredMessages } from "@/composables/database"
+import { getOpenAI } from "@/composables/openai"
+import { b64ImageToBlob } from "@/composables/image-blob"
+
+import ChatInterface from "@/components/chat-interface.vue"
+
 const openai = getOpenAI()
 
 const messages = ref<ChatInterfaceMessage[]>([

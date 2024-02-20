@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { ref } from "vue"
+
+import { ls } from "@/composables/local-storage"
+import { useSettings } from "@/stores/settings"
+
 const settings = useSettings()
 
 const password = ref("")

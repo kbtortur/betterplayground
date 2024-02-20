@@ -1,5 +1,8 @@
 import OpenAI from "openai"
 
+import { useSettings } from "@/stores/settings"
+import { useRouter } from "vue-router"
+
 export const getOpenAI = () => {
   const router = useRouter()
   const settings = useSettings()
